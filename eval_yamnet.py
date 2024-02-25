@@ -1,4 +1,6 @@
 import os
+# suppress tensorflow info logging
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 import json
 import argparse
 import logging

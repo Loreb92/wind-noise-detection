@@ -1,4 +1,6 @@
 import os
+# suppress tensorflow info logging
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 import json
 import gzip
 import logging
@@ -57,7 +59,7 @@ def create_annotated_dataset(annotations_df, model, audio_data_fold, output_fold
 
         audio_file = os.path.join(audio_data_fold, file_name)
         if not os.path.exists(audio_file):
-            logging.info(f"Audio file {audio_file} does not exist, skipped.")
+            logging.info(f"Audio file with annotations {audio_file} does not exist, skipped.")
             continue
 
         # get annotations for this file

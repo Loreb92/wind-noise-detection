@@ -4,6 +4,10 @@ from scipy import signal
 from scipy.io import wavfile
 from tensorflow import int16 as int16_tf
 
+import warnings
+# ignore a scipy warning when reading .wav file because of additional metadata in the file that scipy cannot parse
+warnings.filterwarnings("ignore")
+
 SAMPLE_RATE = 16000
 CLIP_THRESHOLD = 0.90
 
