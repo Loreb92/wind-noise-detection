@@ -17,14 +17,24 @@ then activate the environment with:
 conda activate wind-noise-detection
 ```
 
+#### Data
+
+The data used in the paper is available at the following Zenodo repository: _ADD_PATH_FILES_.
+
+The data is organized in the following way:
+- `data/annotation_5min`: contains the results of the first step of the annotation procedure, in which 208 audio files were annotated with a resolution of 5 minutes.
+- `data/annotation_5sec`: contains the results of the second step of the annotation procedure, in which 72 audio files were annotated with a resolution of 5 seconds.
+The `.csv` file with the final annotations is `data/annotations_5sec/annotations_SA_clean_final.csv`.
+- `data/...`: contains the 208 audio files used in the annotation steps.
+- `data/testing`: contains some audio files used to test the scripts.
+
 ## Reproduce the results of the paper
 
-The repository contains the 208 audio recordings used for the annotation steps described in the paper _ADD_PATH_FILES_. 
 The notebooks `notebook/0.*.ipynb` show how the samples have been chosen, the inter-annotator agreement, and the construction of the final annotated datase.
 
 Run the following command to create the training dataset:
 ```
-python make_dataset_from_annotations.py --annotations-file data/annotations_5sec/annotations_SA_clean.csv --audio-data-fold <fold_with_audio_data> --output-fold <output_folder>
+python make_dataset_from_annotations.py --annotations-file data/annotations_5sec/annotations_SA_clean_final.csv --audio-data-fold <fold_with_audio_data> --output-fold data/dataset
 ```
 This script creates a json file where each row contains the embedding of an audio subsegment and its corresponding annotations.
 

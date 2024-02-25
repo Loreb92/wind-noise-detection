@@ -123,7 +123,10 @@ def main(args):
     model_config = json.load(open(args.model_config_file, 'r')) 
 
     # train the model and save it
+    logging.info("Training the model..")
     train_ffnn(data_df, output_dim=1, learning_rate=model_config['learning_rate'], batch_size=model_config['batch_size'], n_epochs=model_config['n_epochs'], model_args_dict=model_config['model_args'], class_weighting=bool(model_config['class_weight']=='True'), trained_model_fold=args.trained_model_fold)
+
+    logging.info("Done.")
     
 
 
@@ -147,7 +150,7 @@ if __name__ == "__main__":
         raise FileExistsError('The log file already exists. Likely, this script has already run with the input configuration.')
 
     # set the level and format of the logging    
-    logging.basicConfig(filename=log_file, level=logging.DEBUG, format='[%(asctime)s] [%(levelname)s]: %(message)s ', datefmt='%Y-%m-%d %H:%M:%S')
+    logging.basicConfig(filename=log_file, level=logging.INFO, format='[%(asctime)s] [%(levelname)s]: %(message)s ', datefmt='%Y-%m-%d %H:%M:%S')
 
     # make the logger print on terminal
     logging.getLogger().addHandler(logging.StreamHandler())

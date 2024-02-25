@@ -1,6 +1,7 @@
 import os
 import json
 import gzip
+import logging
 import argparse
 import numpy as np
 import pandas as pd
@@ -56,7 +57,7 @@ def create_annotated_dataset(annotations_df, model, audio_data_fold, output_fold
 
         audio_file = os.path.join(audio_data_fold, file_name)
         if not os.path.exists(audio_file):
-            print(f"Audio file {audio_file} does not exist, skipped.")
+            logging.info(f"Audio file {audio_file} does not exist, skipped.")
             continue
 
         # get annotations for this file
@@ -109,8 +110,6 @@ def create_annotated_dataset(annotations_df, model, audio_data_fold, output_fold
 
     fopen.close()
 
-    print("Done!")
-
 
 def main(args):
 
@@ -121,11 +120,14 @@ def main(args):
     # it must have columns 'file_name', referring to the audio recording file, and 'segment_start_s', referring to the second in which the annotated audio segment starts
     # TODO: include different file formats
     annotations_df = pd.read_csv(args.annotations_file)
+    logging.info(f"Loaded {annotations_df.shape[0]} annotations from {annotations_df.file_name.nunique()} audio files.")
 
     if annotations_df[['file_name', 'segment_start_s']].duplicated().any():
         raise ValueError("There are duplicated identifiers in the annotations file.")
     
+    logging.info(f"Creating annotated dataset..")
     create_annotated_dataset(annotations_df, model, args.audio_data_fold, args.output_fold, args.save_spectrogram)
+    logging.info(f"Done!")
 
 
 if __name__ == "__main__":
@@ -134,7 +136,23 @@ if __name__ == "__main__":
     parser.add_argument("--audio-data-fold", type=str, help="Path to folder containing audio data, assuming it is a csv file")
     parser.add_argument("--output-fold", type=str, help="Path to folder where to save output")
     parser.add_argument("--save-spectrogram", type=str2bool, default='false', help="Whether to store the spectrogram of the audio files")
+    parser.add_argument("--logging-file", type=str, default='logs/make_dataset_from_annotations.log', help="Path to file where to save the logging")
     args = parser.parse_args()
+
+    # initialize logger
+    log_dir = os.path.dirname(args.logging_file)
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    log_file = os.path.join(args.logging_file)
+    if os.path.exists(log_file):
+        raise FileExistsError('The log file already exists. Likely, this script has already run with the input configuration.')
+
+    # set the level and format of the logging    
+    logging.basicConfig(filename=log_file, level=logging.INFO, format='[%(asctime)s] [%(levelname)s]: %(message)s ', datefmt='%Y-%m-%d %H:%M:%S')
+
+    # make the logger print on terminal
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     if not os.path.exists(args.output_fold):
         os.mkdir(args.output_fold)

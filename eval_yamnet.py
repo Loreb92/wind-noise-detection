@@ -228,7 +228,7 @@ def main(args):
 
     fopen_results.close()
 
-    logging.info("Training ends!")
+    logging.info("Evaluation ends!")
 
 
 if __name__ == "__main__":
@@ -251,7 +251,7 @@ if __name__ == "__main__":
         raise FileExistsError('The log file already exists. Likely, this script has already run with the input configuration.')
 
     # set the level and format of the logging    
-    logging.basicConfig(filename=log_file, level=logging.DEBUG, format='[%(asctime)s] [%(levelname)s]: %(message)s ', datefmt='%Y-%m-%d %H:%M:%S')
+    logging.basicConfig(filename=log_file, level=logging.INFO, format='[%(asctime)s] [%(levelname)s]: %(message)s ', datefmt='%Y-%m-%d %H:%M:%S')
 
     # make the logger print on terminal
     logging.getLogger().addHandler(logging.StreamHandler())

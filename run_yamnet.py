@@ -4,6 +4,7 @@
 
 import os
 import json
+import logging
 import argparse
 import numpy as np
 from scipy import sparse
@@ -59,10 +60,12 @@ def save_2D_array(arr, file_path, use_pickle=False):
 def main(args):
 
     # load model
+    logging.info("Loading YAMNet model..")
     yamnet_model = YAMNET()
 
     if args.classifier_weights_fold:
         # load classifier
+        logging.info("Loading classifier model..")
         from src.feed_forward_nn import WindClassifier
         classifier_model = WindClassifier(input_dim=yamnet_model._embedding_dim, output_dim=1, activation='sigmoid')
         classifier_model.load_weights(os.path.join(args.classifier_weights_fold, "model_weights.h5"))
@@ -75,6 +78,8 @@ def main(args):
         f.write("\n".join(yamnet_model.class_names))
 
     file_list = os.listdir(args.audio_data_fold)
+    logging.info(f"Found {len(file_list)} files in {args.audio_data_fold}.")
+    logging.info(f"Running YAMNet predictions..")
     for file in tqdm(file_list, total=len(file_list)):
 
         if not file.endswith(".wav"):
@@ -116,6 +121,7 @@ def main(args):
             scores_tl_file_path = os.path.join(args.output_fold, "scores_tl", filename_output)
             save_predictions(classifier_output, scores_tl_file_path)
 
+    logging.info("Done.")
 
 
 
@@ -129,9 +135,24 @@ if __name__ == "__main__":
     parser.add_argument('--save-embeddings', type=str2bool, default='false', help="Whether to store the embeddings of the audio files")
     parser.add_argument('--save-spectrogram', type=str2bool, default='false', help="Whether to store the spectrogram of the audio files")
     parser.add_argument('--save-as', type=str, default='npz', choices=['npz', 'mtx'], help="The file format to save the outputs. It accepts either npz or mtx (Matrix Market format, which enforces portability). Default is npz.")
+    parser.add_argument('--logging-file', type=str, default='logs/run_yamnet.log', help="Path to file where to save the logging")
     args = parser.parse_args()
 
-    
+    # initialize logger
+    log_dir = os.path.dirname(args.logging_file)
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    log_file = os.path.join(args.logging_file)
+    if os.path.exists(log_file):
+        raise FileExistsError('The log file already exists. Likely, this script has already run with the input configuration.')
+
+    # set the level and format of the logging    
+    logging.basicConfig(filename=log_file, level=logging.INFO, format='[%(asctime)s] [%(levelname)s]: %(message)s ', datefmt='%Y-%m-%d %H:%M:%S')
+
+    # make the logger print on terminal
+    logging.getLogger().addHandler(logging.StreamHandler())
+
     if args.save_as == 'mtx':
         from scipy.io import mmwrite
 
