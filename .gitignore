@@ -1,0 +1,50 @@
+unversioned*
+**/*.aux
+**/*.bbl
+**/*.blg
+**/*.log
+**/*.mp
+**/*.out
+**/*.synctex.gz
+**/*.top
+**/*.tui
+aita-posts-dataset.csv.gz
+tmp
+.DS_Store
+tensorboard
+main.pdf
+*.pyc
+*.p
+*.pickle
+*.fdb_latexmk
+*.fls
+*.tmp.nlogo
+.idea
+**/_*
+
+# file formats
+*.gz
+
+# notebooks
+.ipynb_checkpoints
+Untitled*.ipynb
+_*.ipynb
+notebook/
+
+# /paper
+paper/**/*.pdf
+paper/**/*.png
+paper/**/*.jpg
+paper/**/*.tif
+paper/
+
+# /data
+**/_*.csv
+**/_*.xlsx
+data/
+
+# /logs
+logs
+
+# /model
+model/*

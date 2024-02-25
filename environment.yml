@@ -1,0 +1,19 @@
+name: wind-noise-detection
+channels:
+  - defaults
+dependencies:
+  - python=3.11.3
+  - ipykernel
+  - ipywidgets=7
+  - numpy=1.25.0
+  - scipy=1.10.1
+  - pandas=1.5.3
+  - matplotlib=3.7.1
+  - seaborn=0.12.2
+  - tqdm
+  - statsmodels=0.13.5
+  - scikit-learn=1.2.2
+  - conda-forge::tensorflow=2.12
+  - conda-forge::tensorflow-hub=0.8.0
+  - openpyxl
+  - scikit-posthocs=0.8.1
