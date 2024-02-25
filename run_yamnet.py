@@ -1,8 +1,6 @@
-# TODO:
-# - add documentation in README: the purpose of this script is to run YAMNet predictions (using the pretrained model) on a folder of audio files
-# - add some print/logs
-
 import os
+# suppress tensorflow info logging
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 import json
 import logging
 import argparse
@@ -70,7 +68,7 @@ def main(args):
         #classifier_model = WindClassifier(input_dim=yamnet_model._embedding_dim, output_dim=1, activation='sigmoid')
         #classifier_model.load_weights(os.path.join(args.classifier_weights_fold, "model_weights.h5"))
         from tensorflow import keras
-        classifier_model = keras.models.load_model(os.path.join(args.classifier_weights_fold, "model.keras"))
+        classifier_model = keras.models.load_model(os.path.join(args.classifier_weights_fold, "model"))
         return_embeddings = True
     else:
         return_embeddings = args.save_embeddings
@@ -117,7 +115,7 @@ def main(args):
             save_2D_array(yamnet_output["spectrogram"], spectrogram_file_path, use_pickle=use_pickle)
 
         if args.classifier_weights_fold:
-            classifier_output = classifier_model.predict(yamnet_output["embeddings"], batch_size=32)
+            classifier_output = classifier_model.predict(yamnet_output["embeddings"], batch_size=32, verbose=0)
 
             # reshape such that it has same shape as yamnet_output["scores"]
             classifier_output = classifier_output.reshape((-1, 1))

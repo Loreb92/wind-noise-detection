@@ -67,10 +67,7 @@ def train_and_predict_ffnn(train_df, valid_df, test_df, output_dim, learning_rat
         restore_best_weights=True
         )
 
-    # get train and validation data
-    #X_train, y_train = train_data
-    #X_valid, y_valid = valid_data
-
+    # define class weights
     if class_weighting:
         cweight_0 = y_train.shape[0] / (2 * (y_train == 0).sum())
         cweight_1 = y_train.shape[0] / (2 * (y_train == 1).sum())

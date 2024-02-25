@@ -1,4 +1,3 @@
-
 import numpy as np
 from scipy import signal
 from scipy.io import wavfile
@@ -58,10 +57,6 @@ def resample_audio(waveform, original_sample_rate, desired_sample_rate):
     Resample waveform with a sample rate.
 
     If subsampling and multiple, use scipy.signal.decimate, otherwise use scipy.signal.resample.
-
-    TODO:
-    - The original repo of yamnet use a different function to resample the signal (https://github.com/tensorflow/models/blob/d620771a0bb78d05c93c2371c0ea8577b41694c9/research/audioset/yamnet/inference.py#L49C7-L49C68). Implement also this.
-    - There is another function used in an official tutorial (https://www.tensorflow.org/tutorials/audio/transfer_learning_audio?hl=it#:~:text=%C2%A0%20%C2%A0%20wav%20%3D%20tfio.audio.resample(wav%2C%20rate_in%3Dsample_rate%2C%20rate_out%3D16000)). Implement this. Important: understand to what extent the amplitude max is preserved!
     """
 
     if original_sample_rate > desired_sample_rate and original_sample_rate % desired_sample_rate == 0:
