@@ -66,9 +66,14 @@ def main(args):
     if args.classifier_weights_fold:
         # load classifier
         logging.info("Loading classifier model..")
-        from src.feed_forward_nn import WindClassifier
-        classifier_model = WindClassifier(input_dim=yamnet_model._embedding_dim, output_dim=1, activation='sigmoid')
-        classifier_model.load_weights(os.path.join(args.classifier_weights_fold, "model_weights.h5"))
+        #from src.feed_forward_nn import WindClassifier
+        #classifier_model = WindClassifier(input_dim=yamnet_model._embedding_dim, output_dim=1, activation='sigmoid')
+        #classifier_model.load_weights(os.path.join(args.classifier_weights_fold, "model_weights.h5"))
+        from tensorflow import keras
+        classifier_model = keras.models.load_model(os.path.join(args.classifier_weights_fold, "model.keras"))
+        return_embeddings = True
+    else:
+        return_embeddings = args.save_embeddings
 
 
     # save legend of classes
@@ -91,7 +96,7 @@ def main(args):
         waveform, audio_metadata = read_file_audio(os.path.join(args.audio_data_fold, file))
 
         # predict
-        yamnet_output = yamnet_model.predict(waveform, return_embeddings=args.save_embeddings, return_spectrogram=args.save_spectrogram)
+        yamnet_output = yamnet_model.predict(waveform, return_embeddings=return_embeddings, return_spectrogram=args.save_spectrogram)
 
         # save predictions
         scores_file_path = os.path.join(args.output_fold, "scores", filename_output)
@@ -115,7 +120,7 @@ def main(args):
             classifier_output = classifier_model.predict(yamnet_output["embeddings"], batch_size=32)
 
             # reshape such that it has same shape as yamnet_output["scores"]
-            classifier_output = classifier_output.reshape((-1, len(yamnet_model.class_names)))
+            classifier_output = classifier_output.reshape((-1, 1))
 
             # save it
             scores_tl_file_path = os.path.join(args.output_fold, "scores_tl", filename_output)

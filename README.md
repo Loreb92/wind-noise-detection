@@ -34,9 +34,9 @@ The notebooks `notebook/0.*.ipynb` show how the samples have been chosen, the in
 
 Run the following command to create the training dataset:
 ```
-python make_dataset_from_annotations.py --annotations-file data/annotation_5sec/annotations_SA_clean_final.csv --audio-data-fold <fold_with_audio_data> --output-fold data/dataset
+python make_dataset_from_annotations.py --annotations-file data/annotation_5sec/annotations_SA_clean_final.csv --audio-data-fold <fold_with_audio_data> --output-fold data/dataset --logging-file logs/make_dataset_from_annotations.log
 ```
-This script creates a json file where each row contains the embedding of an audio subsegment and its corresponding annotations.
+This script creates the file `dataset_annotated.json.gz` where each row contains the embedding of an audio subsegment and its corresponding annotations.
 
 Then, run the following command to perform the evaluation of the classifier:
 ```

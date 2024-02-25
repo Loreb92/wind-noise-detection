@@ -78,8 +78,8 @@ def train_ffnn(train_df, output_dim, learning_rate, batch_size, n_epochs, model_
                         )
     t1_train = time.time()
 
-    # save model weights
-    model.save_weights(os.path.join(trained_model_fold, "model_weights.h5"))
+    # save model
+    model.save(os.path.join(trained_model_fold, "model.keras"))
 
     # predict on the train and validation set
     y_train_scores = model.predict(X_train, verbose=0).flatten().tolist()
