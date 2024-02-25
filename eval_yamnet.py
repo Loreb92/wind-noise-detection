@@ -256,4 +256,9 @@ if __name__ == "__main__":
     # make the logger print on terminal
     logging.getLogger().addHandler(logging.StreamHandler())
 
+    # initialize results folder
+    res_fold = os.path.dirname(args.output_file)
+    if not os.path.exists(res_fold):
+        os.makedirs(res_fold)
+
     main(args)

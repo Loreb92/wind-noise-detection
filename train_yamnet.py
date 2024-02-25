@@ -155,4 +155,8 @@ if __name__ == "__main__":
     # make the logger print on terminal
     logging.getLogger().addHandler(logging.StreamHandler())
 
+    # init folder to save the trained model
+    if not os.path.exists(args.trained_model_fold):
+        os.makedirs(args.trained_model_fold)
+
     main(args)

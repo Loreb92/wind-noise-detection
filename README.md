@@ -40,7 +40,7 @@ This script creates a json file where each row contains the embedding of an audi
 
 Then, run the following command to perform the evaluation of the classifier:
 ```
-python eval_yamnet.py --input-dataset-file <dataset_file> --output-file <output_file> --logging-file
+python eval_yamnet.py --input-dataset-file data/dataset/dataset_annotated.json.gz --output-file results/results_model_evaluation.json.gz --logging-file logs/eval_yamnet.log
 ```
 This script performs an evaluation of YAMNet employing cross-validation.
 
@@ -49,7 +49,7 @@ The subsequent analyses of the paper can be replicated with the Jupyter Notebook
 The script `eval_yamnet.py` takes an optional argument that can be used to perform the evaluation on a subset of the annotated dataset with half of the size. 
 To do that, run:
 ```
-python eval_yamnet.py --input-dataset-file <dataset_file> --output-file <output_file> --logging-file --use-half-data true
+python eval_yamnet.py --input-dataset-file data/dataset/dataset_annotated.json.gz --output-file results/results_model_evaluation_half_data.json.gz --logging-file logs/eval_yamnet_half_data.log --use-half-data true
 ```
 The subsequent analyses of the paper can be replicated with the Jupyter Notebook `notebook/1.1.1_comparison_performance_half_data.ipynb`.
 
@@ -62,7 +62,7 @@ This makes it already able to predict windy events in acustic data.
 
 To extract the YAMNet predictions, run the following command:
 ```
-python run_yamnet.py --audio-data-fold <folder_containing_audio_files> --output-fold <output_folder>
+python run_yamnet.py --audio-data-fold <folder_containing_audio_files> --output-fold data/yamnet_asis_predictions
 ```
 This script reads all the audio files in `.wav` format inside the provided folder and saves the predictions by YAMNet with additional metadata.
 It creates to folders inside the output folder:
