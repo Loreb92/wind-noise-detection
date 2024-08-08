@@ -55,4 +55,4 @@ test_audio_files/
 logs
 
 # /model
-models/*
+models/ffnn_classifier_yamnet
