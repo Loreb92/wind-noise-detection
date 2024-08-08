@@ -22,7 +22,7 @@ conda activate wind-noise-detection
 #### Data
 
 The data has to be organized in the following way:
-- `data/annotations_5sec/<file_with_annotations_name>.csv`: it is a CSV file containing the annotations of the audio segments. Each annotation refers to a 5 seconds segment of an audio file.
+- `data/annotation_5sec/<file_with_annotations_name>.csv`: it is a CSV file containing the annotations of the audio segments. Each annotation refers to a 5 seconds segment of an audio file. 
 - `data/<folder_with_audio_files>`: it is a folder containing the audio files in `.wav` format.
 
 The annotation file must be a csv file with the following columns:
@@ -30,6 +30,7 @@ The annotation file must be a csv file with the following columns:
 - `segment_start_s`: the start time of the annotated segment in seconds belonging to the audio file. The script assumes that the annotation refers to a segment of length 5 seconds.
 - `wind`: the label of the annotation. It can be either 0 (absence of wind) or 1 (presence of wind).
 The annotation file can contain additional columns.
+The file `data/annotation_5sec/annotations_test_audio_files.csv` is a reference example.
 
 ## Use YAMNet on your own data
 
@@ -77,6 +78,9 @@ python run_yamnet.py --audio-data-fold <folder_containing_audio_files> --classif
 ```
 In addition to the outputs described in the previous section, this creates a folder `scores_tl` with the predicted scores by the trained model.
 
+The file `models/ffnn_classifier_yamnet.zip` contains the weights of the classifier trained on the dataset used in the paper.
+
+Please, refer to the notebook `tutorial/1.0.1_read_outputs_of_run_yamnet.ipynb` for more details on how to read the outputs of the script.
 
 
 ## Citation
