@@ -72,7 +72,7 @@ def resample_audio(waveform, original_sample_rate, desired_sample_rate):
     return waveform
 
 
-def read_file_audio(file_name, format='wav', clip_threshold=0.90):
+def read_file_audio(file_name, format='wav'):
     """
     Reads a wav file and returns the audio data resampled at 16kHz as an array. Assumes mono audio.
 
@@ -84,7 +84,7 @@ def read_file_audio(file_name, format='wav', clip_threshold=0.90):
 
     Returns:
         waveform (np.array): Array containing the audio data.
-        duration (float): Duration of the audio in seconds.
+        metadata (dict): Contains additional information on the file.
     """
 
     if format not in ['wav']:
