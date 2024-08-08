@@ -2,6 +2,8 @@
 
 This repository contains the scripts used in the paper [Windy events recognition in big bioacoustics datasets using the YAMNet pre-trained Convolutional Neural Network](https://www.sciencedirect.com/science/article/pii/S0048969724050174) to identify segments containing wind noise in audio recordings.
 
+The scripts and data needed to reproduce the results of the paper are provided in the Zenodo repository at <https://zenodo.org/records/11220741>.
+
 ## Setup
 
 #### Environment
