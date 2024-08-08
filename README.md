@@ -1,6 +1,6 @@
 # Wind detection YAMNet
 
-This repository contains the scripts to reproduce the paper "Windy events recognition in big bioacoustics datasets using the YAMNet pre-trained Convolutional Neural Network".
+This repository contains the scripts used in the paper "Windy events recognition in big bioacoustics datasets using the YAMNet pre-trained Convolutional Neural Network" to identify segments containing wind noise in audio recordings.
 
 ## Setup
 
@@ -19,47 +19,15 @@ conda activate wind-noise-detection
 
 #### Data
 
-The data used in the paper is available at the following Zenodo repository: _ADD_PATH_FILES_.
+The data has to be organized in the following way:
+- `data/annotations_5sec/<file_with_annotations_name>.csv`: it is a CSV file containing the annotations of the audio segments. Each annotation refers to a 5 seconds segment of an audio file.
+- `data/<folder_with_audio_files>`: it is a folder containing the audio files in `.wav` format.
 
-The data is organized in the following way:
-- `data/annotation_5min`: contains the results of the first step of the annotation procedure, in which 208 audio files were annotated with a resolution of 5 minutes.
-- `data/annotation_5sec`: contains the results of the second step of the annotation procedure, in which 72 audio files were annotated with a resolution of 5 seconds.
-The `.csv` file with the final annotations is `data/annotations_5sec/annotations_SA_clean_final.csv`.
-- `data/208_file_recordings_paper_wind.tar.bz2`: contains the 208 audio files used in the annotation steps.
-- `data/testing`: contains some audio files used to quickly test the scripts.
-
-
-## Reproduce the results of the paper
-
-The notebooks `notebook/0.*.ipynb` show how the samples have been chosen, the inter-annotator agreement, and the construction of the final annotated datase.
-
-Unzip and untar the folder containing the audio files:
-```
-cd data
-bzip2 -dk 208_file_recordings_paper_wind.tar.bz2
-tar -xf 208_file_recordings_paper_wind.tar
-```
-
-Run the following command to create the training dataset:
-```
-python make_dataset_from_annotations.py --annotations-file data/annotation_5sec/annotations_SA_clean_final.csv --audio-data-fold data/208_file_recordings_paper_wind --output-fold data/dataset --logging-file logs/make_dataset_from_annotations.log
-```
-This script creates the file `dataset_annotated.json.gz` where each row contains the embedding of an audio subsegment and its corresponding annotations.
-
-Then, run the following command to perform the evaluation of the classifier:
-```
-python eval_yamnet.py --input-dataset-file data/dataset/dataset_annotated.json.gz --output-file results/results_model_evaluation.json.gz --logging-file logs/eval_yamnet.log
-```
-This script performs an evaluation of YAMNet employing cross-validation.
-
-The subsequent analyses of the paper can be replicated with the Jupyter Notebook `notebook/1.1.0_show_results_model_performance.ipynb`.
-
-The script `eval_yamnet.py` takes an optional argument that can be used to perform the evaluation on a subset of the annotated dataset with half of the size. 
-To do that, run:
-```
-python eval_yamnet.py --input-dataset-file data/dataset/dataset_annotated.json.gz --output-file results/results_model_evaluation_half_data.json.gz --logging-file logs/eval_yamnet_half_data.log --use-half-data true
-```
-The subsequent analyses of the paper can be replicated with the Jupyter Notebook `notebook/1.1.1_comparison_performance_half_data.ipynb`.
+The annotation file must be a csv file with the following columns:
+- `file_name`: the name of the audio file
+- `segment_start_s`: the start time of the annotated segment in seconds belonging to the audio file. The script assumes that the annotation refers to a segment of length 5 seconds.
+- `wind`: the label of the annotation. It can be either 0 (absence of wind) or 1 (presence of wind).
+The annotation file can contain additional columns.
 
 ## Use YAMNet on your own data
 
@@ -70,10 +38,10 @@ This makes it already able to predict windy events in acustic data.
 
 To extract the YAMNet predictions, run the following command:
 ```
-python run_yamnet.py --audio-data-fold <folder_containing_audio_files> --output-fold data/yamnet_asis_predictions
+python run_yamnet.py --audio-data-fold data/<folder_with_audio_files> --output-fold data/yamnet_asis_predictions
 ```
 This script reads all the audio files in `.wav` format inside the provided folder and saves the predictions by YAMNet with additional metadata.
-It creates to folders inside the output folder:
+It creates two folders inside the output folder:
 - `<output_folder>/scores`: contains the predictions in `.npz` format for each audio file. It consists of a matrix with shape `(n_samples, n_classes)` where `n_samples` is the number of audio subsegments in an audio file and `n_classes` is the number of classes in YAMNet. The entries of the matrix corresponds to the probability of the class being present in the subsegment.
 - `<output_folder>/metadata`: contains additional information for each audio file.
 
@@ -82,20 +50,17 @@ The script can take other additional arguments:
 - `--save-spectrogram`: if set to `true`, it saves the spectrogram of the audio file as a matrix in `.npy` format using pickle.
 - `--save-as`: if set to `mtx`, it saves all the output matrices in mtx format.
 
+Please, refer to the notebook `tutorial/1.0.1_read_outputs_of_run_yamnet.ipynb` for more details on how to read the outputs of the script.
+
 ### Train YAMNet on an annotated dataset
 
 The last layer of YAMNet before the classification layer provides a vector representation of the audio subsegments that can be used to train a shallow classifier if annotations are available.
 
 Run the following command to create the training dataset using your own annotations and audio data:
 ```
-python make_dataset_from_annotations.py --annotations-file <annotation_file> --audio-data-fold <fold_with_audio_data> --output-fold <output_folder>
+python make_dataset_from_annotations.py --annotations-file data/annotations_5sec/<file_with_annotations_name>.csv --audio-data-fold data/<folder_with_audio_files> --output-fold <output_folder>
 ```
-This script creates a json file where each row contains the embedding of an audio subsegment and its corresponding annotations.
-The annotation file must be a csv file with the following columns:
-- `file_name`: the name of the audio file
-- `segment_start_s`: the start time of the annotated segment in seconds belonging to the audio file. The script assumes that the annotation refers to a segment of length 5 seconds.
-Any other column can be used for annotations.
-An example of such file is provided in `data/annotations_5sec/FILE`.
+This script creates a json file where each row contains the embedding of an audio subsegment and its corresponding annotations. Note that it creates the embedding vectors only of files that are present in the annotation file, not for all the audio files in the folder.
 
 Then, run the following command to train a classifier:
 ```

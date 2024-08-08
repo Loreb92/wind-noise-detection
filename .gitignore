@@ -40,9 +40,16 @@ paper/**/*.tif
 paper/
 
 # /data
-**/_*.csv
-**/_*.xlsx
-data/
+data/**/*.wav
+data/all_recording_files.csv
+data/annotation_5min
+data/annotation_5sec/annotations_SA_*
+data/annotation_5sec/list_sample_72.csv
+data/meteo_station
+data/yamnet_*
+data/208_file_recordings_paper_wind.tar
+
+test_audio_files/
 
 # /logs
 logs
