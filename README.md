@@ -1,6 +1,6 @@
 # Wind detection YAMNet
 
-This repository contains the scripts used in the paper "Windy events recognition in big bioacoustics datasets using the YAMNet pre-trained Convolutional Neural Network" to identify segments containing wind noise in audio recordings.
+This repository contains the scripts used in the paper [Windy events recognition in big bioacoustics datasets using the YAMNet pre-trained Convolutional Neural Network](https://www.sciencedirect.com/science/article/pii/S0048969724050174) to identify segments containing wind noise in audio recordings.
 
 ## Setup
 
@@ -77,4 +77,22 @@ In addition to the outputs described in the previous section, this creates a fol
 
 
 
+## Citation
 
+Terranova, F., Betti, L., Ferrario, V., Friard, O., Ludynia, K., Petersen, G. S., Mathevon, N., Reby, D., & Favaro, L. (2024). Windy events detection in big bioacoustics datasets using a pre-trained Convolutional Neural Network. Science of The Total Environment, 949, 174868. https://doi.org/10.1016/j.scitotenv.2024.174868
+
+
+```bibtex
+@article{TERRANOVA2024174868,
+    title = {Windy events detection in big bioacoustics datasets using a pre-trained Convolutional Neural Network},
+    journal = {Science of The Total Environment},
+    volume = {949},
+    pages = {174868},
+    year = {2024},
+    issn = {0048-9697},
+    doi = {https://doi.org/10.1016/j.scitotenv.2024.174868},
+    url = {https://www.sciencedirect.com/science/article/pii/S0048969724050174},
+    author = {Francesca Terranova and Lorenzo Betti and Valeria Ferrario and Olivier Friard and Katrin Ludynia and Gavin Sean Petersen and Nicolas Mathevon and David Reby and Livio Favaro},
+    keywords = {Bioacoustics, Deep learning, Ecoacoustics, Passive Acoustic Monitoring, Soundscape ecology, Wind-noise}
+}
+```
