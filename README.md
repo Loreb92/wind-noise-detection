@@ -25,16 +25,24 @@ The data is organized in the following way:
 - `data/annotation_5min`: contains the results of the first step of the annotation procedure, in which 208 audio files were annotated with a resolution of 5 minutes.
 - `data/annotation_5sec`: contains the results of the second step of the annotation procedure, in which 72 audio files were annotated with a resolution of 5 seconds.
 The `.csv` file with the final annotations is `data/annotations_5sec/annotations_SA_clean_final.csv`.
-- `data/...`: contains the 208 audio files used in the annotation steps.
-- `data/testing`: contains some audio files used to test the scripts.
+- `data/208_file_recordings_paper_wind.tar.bz2`: contains the 208 audio files used in the annotation steps.
+- `data/testing`: contains some audio files used to quickly test the scripts.
+
 
 ## Reproduce the results of the paper
 
 The notebooks `notebook/0.*.ipynb` show how the samples have been chosen, the inter-annotator agreement, and the construction of the final annotated datase.
 
+Unzip and untar the folder containing the audio files:
+```
+cd data
+bzip2 -dk 208_file_recordings_paper_wind.tar.bz2
+tar -xf 208_file_recordings_paper_wind.tar
+```
+
 Run the following command to create the training dataset:
 ```
-python make_dataset_from_annotations.py --annotations-file data/annotation_5sec/annotations_SA_clean_final.csv --audio-data-fold <fold_with_audio_data> --output-fold data/dataset --logging-file logs/make_dataset_from_annotations.log
+python make_dataset_from_annotations.py --annotations-file data/annotation_5sec/annotations_SA_clean_final.csv --audio-data-fold data/208_file_recordings_paper_wind --output-fold data/dataset --logging-file logs/make_dataset_from_annotations.log
 ```
 This script creates the file `dataset_annotated.json.gz` where each row contains the embedding of an audio subsegment and its corresponding annotations.
 

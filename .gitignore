@@ -30,6 +30,7 @@ main.pdf
 Untitled*.ipynb
 _*.ipynb
 notebook/
+notebook_additional/
 
 # /paper
 paper/**/*.pdf
@@ -47,4 +48,4 @@ data/
 logs
 
 # /model
-model/*
+models/*

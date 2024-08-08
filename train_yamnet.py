@@ -75,7 +75,7 @@ def train_ffnn(train_df, output_dim, learning_rate, batch_size, n_epochs, model_
                         callbacks=[early_stop_callback],
                         shuffle=True,
                         validation_data=(X_valid,y_valid),
-                     verbose=0,
+                     verbose=2,
                      class_weight=class_weights
                         )
     t1_train = time.time()
